@@ -30,3 +30,11 @@
 
 # Debug files
 *.dSYM/
+
+# Cmake build directory
+build/*
+
+# Intellij
+.idea/*
+
+bin/*
