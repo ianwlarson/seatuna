@@ -1,4 +1,3 @@
-/*
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -97,6 +96,7 @@ bool chacha20_tests()
 
 bool seatuna_tests()
 {
+    return false;
     uint8_t *buf = malloc(1000);
 
     SeaTuna_t *s = malloc(sizeof(*s));
@@ -120,4 +120,4 @@ bool seatuna_tests()
 end:
     free(buf);
     free(s);
-}*/
+}

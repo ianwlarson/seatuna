@@ -16,4 +16,7 @@ add_executable(sha_tests sha_tests.c)
 
 target_link_libraries(sha_tests Unity)
 
+install(TARGETS sha_tests
+	RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
+
 add_test(sha_tests sha_tests)
