@@ -23,25 +23,22 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/src/platform/linux)
 
+add_library(Unity STATIC ext/src/unity.c)
+target_include_directories(Unity PUBLIC ${PROJECT_SOURCE_DIR}/ext/src)
+
 add_subdirectory(src)
-add_subdirectory(external)
 add_subdirectory(test)
 
 add_library(seatuna SHARED ${lib_srcs})
+add_executable(seatuna_tests ${test_srcs} ${lib_srcs})
 
-install(TARGETS seatuna
+target_link_libraries(seatuna_tests PUBLIC Unity)
+
+install(TARGETS seatuna seatuna_tests
         LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/lib
         RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin
         ARCHIVE DESTINATION ${PROJECT_SOURCE_DIR}/lib)
 
-if (UNITY_ROOT_DIR)
-    message(STATUS "Testing enabled.")
-    #add_executable(seatuna_tests ${test_srcs} ${lib_srcs})
-    #target_link_libraries(seatuna_tests PUBLIC Unity)
-    #install(TARGETS seatuna_tests RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
-else()
-    #message(STATUS "${UNITY_ROOT_DIR}")
-    message(WARNING "Tests cannot be compiled without Unity. Set UNITY_ROOT_DIR.")
-endif()
+install(TARGETS seatuna_tests RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/bin)
 
 message(STATUS "${PROJECT_SOURCE_DIR}")

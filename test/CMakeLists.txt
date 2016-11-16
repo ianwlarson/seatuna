@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#file(GLOB srcs ./ *.c)
+file(GLOB srcs ./ *.c)
 
-#set(test_srcs ${srcs} PARENT_SCOPE)
+set(test_srcs ${srcs} PARENT_SCOPE)
 
 add_subdirectory(sha_tests)
