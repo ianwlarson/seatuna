@@ -48,8 +48,7 @@ static inline void cc20_double_round(uint32_t *state)
 
 static bool cc20_bytes(uint8_t *key, uint32_t *counter, uint8_t *nonce, uint8_t *out, size_t size)
 {
-    uint32_t state[16] = {0x61707865, 0x3320646e,
-      0x79622d32, 0x6b206574};
+    uint32_t state[16] = {0x61707865, 0x3320646e, 0x79622d32, 0x6b206574};
     memcpy(state + 4, key, 32);
     state[12] = *counter;
     memcpy(state + 13, nonce, 12);
