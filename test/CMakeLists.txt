@@ -1,6 +1,3 @@
 
-file(GLOB srcs ./ *.c)
-
-set(test_srcs ${srcs} PARENT_SCOPE)
-
 add_subdirectory(sha_tests)
+add_subdirectory(chacha20_test)

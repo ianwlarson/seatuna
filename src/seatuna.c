@@ -34,6 +34,8 @@ bool seatuna_seed(const uint8_t *seed, size_t seed_size, SeaTuna_t *state)
 
     state->counter[0] = 1;
     state->counter[1] = 0;
+	
+	return true;
 }
 
 bool seatuna_reseed(const uint8_t *add, size_t add_size, SeaTuna_t *state)

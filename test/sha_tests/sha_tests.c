@@ -42,7 +42,7 @@ static void test_sha256_00(void **state)
     hex_to_buf(exp_hex, exp);
     char message[] = "abc";
 
-    sha256_update(message, strlen(message), *state);
+    sha256_update((uint8_t *) message, strlen(message), *state);
 
     uint8_t actual[32];
     sha256_final(actual, *state);
@@ -57,7 +57,7 @@ static void test_sha256_01(void **state)
     hex_to_buf(exp_hex, exp);
     char message[] = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
 
-    sha256_update(message, strlen(message), *state);
+    sha256_update((uint8_t *) message, strlen(message), *state);
 
     uint8_t actual[32];
     sha256_final(actual, *state);
@@ -73,7 +73,7 @@ static void test_sha256_02(void **state)
     char message[] = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno"
         "ijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu";
 
-    sha256_update(message, strlen(message), *state);
+    sha256_update((uint8_t *) message, strlen(message), *state);
 
     uint8_t actual[32];
     sha256_final(actual, *state);
@@ -89,7 +89,7 @@ static void test_sha256_03(void **state)
     char message[] = "aaaaaaaaaa";
 
     for (int i = 0; i < 100000; ++i) {
-        sha256_update(message, strlen(message), *state);
+        sha256_update((uint8_t *) message, strlen(message), *state);
     }
 
     uint8_t actual[32];
