@@ -7,12 +7,14 @@
 #include <stdlib.h>
 
 typedef struct {
-    uint32_t key[8];
-    uint32_t nonce[3];
-    uint64_t counter[2];
+    uint8_t key[64];
+	uint32_t *pools;
+	int pcount;
+	uint32_t bytes_gen;
+	bool seeded;
 } SeaTuna_t;
 
-bool seatuna_init(SeaTuna_t *state);
+bool seatuna_init(SeaTuna_t *state, int num_pools);
 
 bool seatuna_seed(const uint8_t *seed, size_t seed_size, SeaTuna_t *state);
 

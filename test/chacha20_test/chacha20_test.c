@@ -4,7 +4,8 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
-#include "portable_chacha20.h"
+#include "seatuna_chacha20.h"
+#include "static_utils.h"
 
 static void test_chacha20_00(void **state)
 {
@@ -17,7 +18,7 @@ static void test_chacha20_00(void **state)
 	hex_to_buf(exp_hex, exp);
 
 	uint8_t actual[64];
-	cc20_bytes(key, &counter, nonce, actual, 64);
+	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
 	assert_memory_equal(exp, actual, 64);
 }
@@ -33,7 +34,7 @@ static void test_chacha20_01(void **state)
 	hex_to_buf(exp_hex, exp);
 
 	uint8_t actual[64];
-	cc20_bytes(key, &counter, nonce, actual, 64);
+	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
 	assert_memory_equal(exp, actual, 64);
 }
@@ -50,7 +51,7 @@ static void test_chacha20_02(void **state)
 	hex_to_buf(exp_hex, exp);
 
 	uint8_t actual[64];
-	cc20_bytes(key, &counter, nonce, actual, 64);
+	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
 	assert_memory_equal(exp, actual, 64);
 }
@@ -69,7 +70,7 @@ static void test_chacha20_03(void **state)
 	hex_to_buf(exp_hex, exp);
 
 	uint8_t actual[64];
-	cc20_bytes(key, &counter, nonce, actual, 64);
+	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
 	assert_memory_equal(exp, actual, 64);
 }
@@ -88,7 +89,7 @@ static void test_chacha20_04(void **state)
 	hex_to_buf(exp_hex, exp);
 
 	uint8_t actual[64];
-	cc20_bytes(key, &counter, nonce, actual, 64);
+	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
 	assert_memory_equal(exp, actual, 64);
 }

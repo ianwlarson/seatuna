@@ -100,18 +100,6 @@ top:
     goto top;
 }
 
-#ifndef strnlen
-static inline size_t strnlen(const char *string, size_t maxlen)
-{
-    size_t counter = 0;
-    while (counter < maxlen && string[counter] != '\0') {
-        ++counter;
-    }
-
-    return counter;
-}
-#endif
-
 #define MAX_HEX_LEN 4096
 
 static inline bool hex_to_buf(char *hex_string, uint8_t *buffer)
