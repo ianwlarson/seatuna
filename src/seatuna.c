@@ -1,7 +1,7 @@
 
 #include "seatuna.h"
 #include "portable_sha256.h"
-#include "portable_chacha20.h"
+#include "seatuna_chacha20.h"
 
 bool seatuna_init(SeaTuna_t *state, int num_pools)
 {
@@ -32,7 +32,7 @@ bool seatuna_seed(const uint8_t *seed, size_t seed_size, SeaTuna_t *state)
     sha256_update(seed, seed_size, &ctx);
     sha256_final(seedhash, &ctx);
 	
-	cc20_bytes(seedhash, &counter, nonce, (uint8_t *) state->pools, sizeof(*state->pools * state->pcount));
+	seatuna_chacha20_bytes(seedhash, &counter, nonce, sizeof(*state->pools * state->pcount), (uint8_t *) state->pools);
 	
 	state->seeded = true;
 	

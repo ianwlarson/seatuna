@@ -4,6 +4,8 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+#include <stdio.h>
+
 #include "seatuna_chacha20.h"
 #include "static_utils.h"
 
@@ -99,6 +101,56 @@ static void test_chacha20_04(void **state)
 	assert_memory_equal(exp, actual, 64);
 }
 
+static void test_chacha20_05(void **state)
+{
+	uint8_t key[32] = {0};
+	uint8_t nonce[12] = {0};
+	uint32_t counter = 0;
+
+	char *exp_hex = "76b8e0ada0f13d90405d6ae55386bd28bdd219b8a08ded1aa836efcc8b770dc7da" 
+	"41597c5157488d7724e03fb8d84a376a43b8f41518a11cc387b669b2ee65869f07e7be5551387a98ba9"
+	"77c732d080dcb0f29a048e3656912c6533e32ee7aed29b721769ce64e43d57133b074d839d531ed1f28"
+	"510afb45ace10a1f4b794d6f2d09a0e663266ce1ae7ed1081968a075";
+	uint8_t exp[144];
+	hex_to_buf(exp_hex, exp);
+
+	uint8_t actual[144];
+	seatuna_chacha20_bytes(key, &counter, nonce, 144, actual);
+	
+	assert_int_equal(counter, 3);
+	assert_memory_equal(exp, actual, 144);
+}
+
+static void test_chacha20_06(void **state)
+{
+	uint8_t key[32] = {0};
+	uint8_t nonce[12] = {0};
+	uint32_t counter = 0;
+
+	char *exp_hex = "76b8e0ada0f13d90405d6ae55386bd28bdd219b8a08ded1aa836efcc8b770dc7da" 
+	"41597c5157488d7724e03fb8d84a376a43b8f41518a11cc387b669b2ee65869f07e7be5551387a98ba9"
+	"77c732d080dcb0f29a048e3656912c6533e32ee7aed29b721769ce64e43d57133b074d839d531ed1f28"
+	"510afb45ace10a1f4b794d6f2d09a0e663266ce1ae7ed1081968a075";
+	uint8_t exp[144];
+	hex_to_buf(exp_hex, exp);
+
+	uint8_t actual[150];
+	actual[144] = 0x00;
+	actual[145] = 0x01;
+	actual[146] = 0x02;
+	actual[147] = 0x03;
+	actual[148] = 0x04;
+	actual[149] = 0x05;
+	
+	uint8_t guard[6] = {0x0, 0x01, 0x02, 0x03, 0x04, 0x05};
+	
+	seatuna_chacha20_bytes(key, &counter, nonce, 144, actual);
+	
+	assert_int_equal(counter, 3);
+	assert_memory_equal(exp, actual, 144);
+	assert_memory_equal(guard, actual + 144, 6);
+}
+
 int main(void)
 {
     const struct CMUnitTest tests[] = {
@@ -107,6 +159,8 @@ int main(void)
         cmocka_unit_test(test_chacha20_02),
         cmocka_unit_test(test_chacha20_03),
         cmocka_unit_test(test_chacha20_04),
+        cmocka_unit_test(test_chacha20_05),
+        cmocka_unit_test(test_chacha20_06),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

@@ -145,6 +145,8 @@ ltop:
 	paddd	%xmm6, %xmm2
 	paddd	%xmm7, %xmm3
 	
+	inc		%r10
+	
 	cmp		$64, %rcx
 	jl lastblock
 	movdqu %xmm0, (%r8)
@@ -167,10 +169,76 @@ ltop:
 	jmp		lagain;
 	
 lastblock:
+
+	movdqu %xmm0, %xmm4
+	cmp		$16, %rcx
+	jl		lessthansixteen
+	movdqu %xmm4, (%r8)
+	add		$16, %r8
+	sub		$16, %rcx
 	
+	movdqu %xmm1, %xmm4
+	cmp		$16, %rcx
+	jl		lessthansixteen
+	movdqu %xmm4, (%r8)
+	add		$16, %r8
+	sub		$16, %rcx
 	
+	movdqu %xmm2, %xmm4
+	cmp		$16, %rcx
+	jl		lessthansixteen
+	movdqu %xmm4, (%r8)
+	add		$16, %r8
+	sub		$16, %rcx
+	
+	movdqu %xmm3, %xmm4
+	cmp		$16, %rcx
+	jl		lessthansixteen
+	movdqu %xmm4, (%r8)
+	add		$16, %r8
+	sub		$16, %rcx
+	
+	jmp donefinal;
+	
+lessthansixteen:
+	cmp		$8, %rcx
+	jl		lessthaneight
+	movq	%xmm4, %rax
+	psrldq	$8, %xmm4
+	movq	%rax, (%r8)
+	sub		$8, %rcx
+	
+	cmp		$8, %rcx
+	jl		lessthaneight
+	movq	%xmm4, %rax
+	psrldq	$8, %xmm4
+	movq	%rax, (%r8)
+	sub		$8, %rcx
+	
+	jmp donefinal
+	
+lessthaneight:
+	movq	(%r8), %rdi
+	shl		$3, %rcx
+	shr		%cl, %rdi
+	shl		%cl, %rdi
+	mov		$64, %rdx
+	sub		%rcx, %rdx
+	mov		%rdx, %rcx
+	shl		%cl, %rax
+	shr		%cl, %rax
+	or		%rdi, %rax
+	movq	%rax, (%r8)
 donefinal:
-	inc		%r10
+	pxor	%xmm0, %xmm0
+	pxor	%xmm1, %xmm1
+	pxor	%xmm2, %xmm2
+	pxor	%xmm3, %xmm3
+	pxor	%xmm4, %xmm4
+	pxor	%xmm5, %xmm5
+	pxor	%xmm6, %xmm6
+	pxor	%xmm7, %xmm7
+	pxor	%xmm8, %xmm8
 	mov		%r10, %rax
 	movl	%eax, (%rsi)
 	addq	$16, %rsp

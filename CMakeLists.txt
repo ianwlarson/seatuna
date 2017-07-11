@@ -30,8 +30,6 @@ ELSE()
 ENDIF()
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/src/platform/linux)
 
 add_subdirectory(bench)
 add_subdirectory(src)

@@ -100,14 +100,12 @@ void seatuna_chacha20_bytes(uint8_t *key, uint32_t *counter, uint8_t *nonce, siz
 	state[12] = l_counter;
 	memcpy(state + 13, nonce, 12);
 
-#if SEATUNA_BIG_ENDIAN
 	for (int i = 0; i < 16; ++i) {
 		state[i] = swap_32_le(state[i]);
 	}
-#endif
 
 	uint32_t work[16];
-	for (uint32_t i = 0; i < (size / 64); ++i) {
+	while (size > 64) {
 
 		memcpy(work, state, 64);
 
@@ -115,7 +113,9 @@ void seatuna_chacha20_bytes(uint8_t *key, uint32_t *counter, uint8_t *nonce, siz
 
 		state[12] = swap_32_le(++l_counter);
 
-		memcpy(out + i*64, work, 64);
+		memcpy(out, work, 64);
+		out += 64;
+		size -= 64;
 	}
 
 	memcpy(work, state, 64);
@@ -124,5 +124,5 @@ void seatuna_chacha20_bytes(uint8_t *key, uint32_t *counter, uint8_t *nonce, siz
 	
 	*counter = l_counter + 1;
 
-	memcpy(out + size - (size & 63), work, size & 63);
+	memcpy(out, work, size);
 }
