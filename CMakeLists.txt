@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.0.2)
 
-project(seatuna C)
+project(seatuna C ASM)
 
 set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE PATH "Installation directory for libraries.")
 set(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "Installation directory for headers.")
@@ -16,7 +16,9 @@ find_package(cmocka REQUIRED)
 
 enable_testing()
 
-add_compile_options(-std=gnu99 -Wall -Wpedantic)
+add_compile_options(-std=gnu99 -save-temps -Wall -Wpedantic)
+
+option(CHACHA20_DEFAULT "Use the default c chacha20 implementation.")
 
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	MESSAGE("Debug build.")

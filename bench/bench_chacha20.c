@@ -32,7 +32,9 @@ int main(void)
 		nsec = (et.tv_sec - st.tv_sec) * NSEC_PER_SEC +
 			(et.tv_nsec - st.tv_nsec);
 
-		printf("%ld\t%d\n", nsec, GENBYTES);
+		double mbs = 1.0*GENBYTES / nsec * 1000.0;
+			
+		printf("Test %d:\t%f MB/s\n", i, mbs);
 	}
 	
 	free(buffer);

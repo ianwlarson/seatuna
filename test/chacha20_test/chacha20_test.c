@@ -20,6 +20,7 @@ static void test_chacha20_00(void **state)
 	uint8_t actual[64];
 	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
+	assert_int_equal(counter, 1);
 	assert_memory_equal(exp, actual, 64);
 }
 
@@ -36,6 +37,7 @@ static void test_chacha20_01(void **state)
 	uint8_t actual[64];
 	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
+	assert_int_equal(counter, 2);
 	assert_memory_equal(exp, actual, 64);
 }
 
@@ -53,6 +55,7 @@ static void test_chacha20_02(void **state)
 	uint8_t actual[64];
 	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
+	assert_int_equal(counter, 2);
 	assert_memory_equal(exp, actual, 64);
 }
 
@@ -72,6 +75,7 @@ static void test_chacha20_03(void **state)
 	uint8_t actual[64];
 	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
+	assert_int_equal(counter, 3);
 	assert_memory_equal(exp, actual, 64);
 }
 
@@ -91,6 +95,7 @@ static void test_chacha20_04(void **state)
 	uint8_t actual[64];
 	seatuna_chacha20_bytes(key, &counter, nonce, 64, actual);
 
+	assert_int_equal(counter, 1);
 	assert_memory_equal(exp, actual, 64);
 }
 

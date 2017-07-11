@@ -94,37 +94,35 @@ static inline void chacha20_rounds(uint32_t state[16])
 
 void seatuna_chacha20_bytes(uint8_t *key, uint32_t *counter, uint8_t *nonce, size_t size, uint8_t *out)
 {
-    uint32_t state[16] = {0x61707865, 0x3320646e, 0x79622d32, 0x6b206574};
-    memcpy(state + 4, key, 32);
-    state[12] = *counter;
-    memcpy(state + 13, nonce, 12);
+	uint32_t state[16] = {0x61707865, 0x3320646e, 0x79622d32, 0x6b206574};
+	uint32_t l_counter = *counter;
+	memcpy(state + 4, key, 32);
+	state[12] = l_counter;
+	memcpy(state + 13, nonce, 12);
 
 #if SEATUNA_BIG_ENDIAN
-    for (int i = 0; i < 16; ++i) {
-        state[i] = swap_32_le(state[i]);
-    }
+	for (int i = 0; i < 16; ++i) {
+		state[i] = swap_32_le(state[i]);
+	}
 #endif
 
-    uint32_t work[16];
-    for (uint32_t i = 0; i < (size / 64); ++i) {
+	uint32_t work[16];
+	for (uint32_t i = 0; i < (size / 64); ++i) {
 
-        memcpy(work, state, 64);
+		memcpy(work, state, 64);
 
-        chacha20_rounds(work);
+		chacha20_rounds(work);
 
-		state[12] = ++(*counter);
-		// TODO MAKE THIS NICER.
-#if SEATUNA_BIG_ENDIAN
-        state[12] = swap_32_le(state[12]);
-#endif
-        memcpy(out + i*64, work, 64);
-    }
+		state[12] = swap_32_le(++l_counter);
 
-    memcpy(work, state, 64);
+		memcpy(out + i*64, work, 64);
+	}
 
-    chacha20_rounds(work);
+	memcpy(work, state, 64);
 
-    ++(*counter);
+	chacha20_rounds(work);
+	
+	*counter = l_counter + 1;
 
-    memcpy(out + size - (size & 63), work, size & 63);
+	memcpy(out + size - (size & 63), work, size & 63);
 }
