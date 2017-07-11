@@ -16,6 +16,7 @@ find_package(cmocka REQUIRED)
 
 enable_testing()
 
+# TODO Remove -save-temps at some point.
 add_compile_options(-std=gnu99 -save-temps -Wall -Wpedantic)
 
 option(CHACHA20_DEFAULT "Use the default c chacha20 implementation.")
